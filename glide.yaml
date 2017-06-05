@@ -1,0 +1,16 @@
+package: github.com/adieu/fluent-bit-aliyun
+ignore:
+- net/url
+- net/rpc
+- net/http
+import:
+- package: github.com/fluent/fluent-bit-go
+  subpackages:
+  - output
+- package: github.com/galaxydi/go-loghub
+- package: github.com/gogo/protobuf
+  subpackages:
+  - proto
+- package: github.com/ugorji/go
+  subpackages:
+  - codec

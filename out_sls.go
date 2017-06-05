@@ -7,6 +7,7 @@ import (
 	sls "github.com/galaxydi/go-loghub"
 	"github.com/gogo/protobuf/proto"
 	"github.com/ugorji/go/codec"
+	"os"
 	"reflect"
 	"unsafe"
 )
@@ -16,14 +17,30 @@ var logstore *sls.LogStore
 
 //export FLBPluginInit
 func FLBPluginInit(ctx unsafe.Pointer) int {
+	return FLBPluginRegister(ctx)
+}
+
+//export FLBPluginRegister
+func FLBPluginRegister(ctx unsafe.Pointer) int {
+	accessKey := os.Getenv("ALIYUN_ACCESS_KEY")
+	accessKeySecret := os.Getenv("ALIYUN_ACCESS_KEY_SECRET")
+	projectName := os.Getenv("ALIYUN_SLS_PROJECT")
+	endpoint := os.Getenv("ALIYUN_SLS_ENDPOINT")
+	logstoreName := os.Getenv("ALIYUN_SLS_LOGSTORE")
+
 	project = &sls.LogProject{
-		Name:            "loghub-test",
-		Endpoint:        "cn-hangzhou.log.aliyuncs.com",
-		AccessKeyID:     "xxx",
-		AccessKeySecret: "xxx",
+		Name:            projectName,
+		Endpoint:        endpoint,
+		AccessKeyID:     accessKey,
+		AccessKeySecret: accessKeySecret,
 	}
-	logstore_name := "test"
-	logstore, _ = project.GetLogStore(logstore_name)
+
+	var err error
+	logstore, err = project.GetLogStore(logstoreName)
+	if err != nil {
+		fmt.Printf("Unable to get logstore %v: %v", logstoreName, err)
+		return output.FLB_ERROR
+	}
 	return output.FLBPluginRegister(ctx, "sls", "Aliyun SLS output")
 }
 
@@ -33,6 +50,11 @@ func FLBPluginFlush(data unsafe.Pointer, length C.int, tag *C.char) int {
 	var b []byte
 	var m interface{}
 	var err error
+
+	if logstore == nil {
+		fmt.Printf("logstore is nil")
+		return output.FLB_ERROR
+	}
 
 	b = C.GoBytes(data, length)
 	dec := codec.NewDecoderBytes(b, h)
@@ -48,8 +70,13 @@ func FLBPluginFlush(data unsafe.Pointer, length C.int, tag *C.char) int {
 
 		// Get a slice and their two entries: timestamp and map
 		slice := reflect.ValueOf(m)
-		timestamp := slice.Index(0)
+		timestampData := slice.Index(0)
 		data := slice.Index(1)
+		timestamp, ok := timestampData.Interface().(uint64)
+		if !ok {
+			fmt.Printf("Unable to convert timestamp: %+v", timestampData)
+			return output.FLB_ERROR
+		}
 
 		// Convert slice data to a real map and iterate
 		mapData := data.Interface().(map[interface{}]interface{})
@@ -61,7 +88,7 @@ func FLBPluginFlush(data unsafe.Pointer, length C.int, tag *C.char) int {
 			})
 		}
 		log := &sls.Log{
-			Time:     proto.Uint32(uint32(timestamp.Uint())),
+			Time:     proto.Uint32(uint32(timestamp)),
 			Contents: content,
 		}
 		logs = append(logs, log)

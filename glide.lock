@@ -1,0 +1,22 @@
+hash: c2d36aa602f1f36b9a3826812def7406b71aafc620fd37a834022620d3874a81
+updated: 2017-06-05T16:36:23.570557474+08:00
+imports:
+- name: github.com/cloudflare/golz4
+  version: ef862a3cdc58a6f1fee4e3af3d44fbe279194cde
+- name: github.com/fluent/fluent-bit-go
+  version: 7c5a0b221303e9e75d0ea7cb23416c8d14e48d0b
+  subpackages:
+  - output
+- name: github.com/galaxydi/go-loghub
+  version: 228ca31911b37dd900a5ab9a3fbdc66c2d88ab16
+- name: github.com/gogo/protobuf
+  version: c0656edd0d9eab7c66d1eb0c568f9039345796f7
+  subpackages:
+  - proto
+- name: github.com/golang/glog
+  version: 44145f04b68cf362d9c4df2182967c2275eaefed
+- name: github.com/ugorji/go
+  version: ded73eae5db7e7a0ef6f55aace87a2873c5d2b74
+  subpackages:
+  - codec
+testImports: []
