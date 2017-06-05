@@ -80,11 +80,24 @@ func FLBPluginFlush(data unsafe.Pointer, length C.int, tag *C.char) int {
 
 		// Convert slice data to a real map and iterate
 		mapData := data.Interface().(map[interface{}]interface{})
+		flattenData, err := Flatten(mapData, "", StringStyle)
+		if err != nil {
+			break
+		}
 		content := []*sls.LogContent{}
-		for k, v := range mapData {
+		for k, v := range flattenData {
+			value := ""
+			switch t := v.(type) {
+			case string:
+				value = t
+			case []byte:
+				value = string(t)
+			default:
+				value = fmt.Sprintf("%v", v)
+			}
 			content = append(content, &sls.LogContent{
-				Key:   proto.String(fmt.Sprintf("%s", k)),
-				Value: proto.String(fmt.Sprintf("%s", v)),
+				Key:   proto.String(k),
+				Value: proto.String(value),
 			})
 		}
 		log := &sls.Log{
