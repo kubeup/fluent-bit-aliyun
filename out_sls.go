@@ -1,9 +1,9 @@
 package main
 
-import "github.com/fluent/fluent-bit-go/output"
 import (
 	"C"
 	"fmt"
+	"github.com/fluent/fluent-bit-go/output"
 	sls "github.com/galaxydi/go-loghub"
 	"github.com/gogo/protobuf/proto"
 	"github.com/ugorji/go/codec"
@@ -80,7 +80,7 @@ func FLBPluginFlush(data unsafe.Pointer, length C.int, tag *C.char) int {
 
 		// Convert slice data to a real map and iterate
 		mapData := data.Interface().(map[interface{}]interface{})
-		flattenData, err := Flatten(mapData, "", StringStyle)
+		flattenData, err := Flatten(mapData, "", UnderscoreStyle)
 		if err != nil {
 			break
 		}
@@ -108,7 +108,7 @@ func FLBPluginFlush(data unsafe.Pointer, length C.int, tag *C.char) int {
 	}
 	loggroup := &sls.LogGroup{
 		Topic:  proto.String(""),
-		Source: proto.String("10.230.201.117"),
+		Source: proto.String(""),
 		Logs:   logs,
 	}
 	err = logstore.PutLogs(loggroup)
