@@ -1,4 +1,4 @@
-package: github.com/adieu/fluent-bit-aliyun
+package: github.com/kubeup/fluent-bit-aliyun
 ignore:
 - net/url
 - net/rpc
