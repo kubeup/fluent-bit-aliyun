@@ -1,4 +1,4 @@
-FROM kubeup/fluent-bit:latest
+FROM fluent/fluent-bit:0.11
 USER root
 COPY etc /fluent-bit/etc/
 COPY out_sls.so /fluent-bit/
