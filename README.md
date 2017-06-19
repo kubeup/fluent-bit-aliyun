@@ -1,5 +1,7 @@
 # Fluent Bit Aliyun
 
+[![CircleCI](https://circleci.com/gh/kubeup/fluent-bit-aliyun/tree/master.svg?style=shield)](https://circleci.com/gh/kubeup/fluent-bit-aliyun)
+
 Fluent Bit output plugin which sends logs to [Aliyun Simple Log Service(SLS)](https://cn.aliyun.com/product/sls).
 You can do realtime analysis and archiving using other Aliyun products. Check Aliyun
 documents for detailed usage.
@@ -57,4 +59,3 @@ You can config the plugin using environment variables. We support these configs:
 
 You should consider creating a dedicated account in [RAM](https://cn.aliyun.com/product/ram)
 just for logging for better security protection.
-
