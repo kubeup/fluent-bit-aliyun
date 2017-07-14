@@ -3,13 +3,14 @@ package main
 import (
 	"C"
 	"fmt"
+	"os"
+	"reflect"
+	"unsafe"
+
 	"github.com/fluent/fluent-bit-go/output"
 	sls "github.com/galaxydi/go-loghub"
 	"github.com/gogo/protobuf/proto"
 	"github.com/ugorji/go/codec"
-	"os"
-	"reflect"
-	"unsafe"
 )
 
 var project *sls.LogProject
@@ -107,7 +108,7 @@ func FLBPluginFlush(data unsafe.Pointer, length C.int, tag *C.char) int {
 		logs = append(logs, log)
 	}
 	loggroup := &sls.LogGroup{
-		Topic:  proto.String(""),
+		Topic:  proto.String(C.GoString(tag)),
 		Source: proto.String(""),
 		Logs:   logs,
 	}
