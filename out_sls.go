@@ -107,7 +107,7 @@ func FLBPluginFlush(data unsafe.Pointer, length C.int, tag *C.char) int {
 		logs = append(logs, log)
 	}
 	loggroup := &sls.LogGroup{
-		Topic:  proto.String(""),
+		Topic:  proto.String(C.GoString(tag)),
 		Source: proto.String(""),
 		Logs:   logs,
 	}
