@@ -17,7 +17,7 @@ Docker supports fluentd as a log driver. You can launch `fluent-bit-aliyun` in a
 and ask Docker to send logs to it.
 
 ```
-$ docker run -d --network host -e ALIYUN_ACCESS_KEY=YOUR_ACCESS_KEY -e ALIYUN_ACCESS_KEY_SECRET=YOUR_ACCESS_KEY_SECRET -e ALIYUN_SLS_PROJECT=YOUR_PROJECT -e ALIYUN_SLS_LOGSTORE=YOUR_LOGSTORE -e ALIYUN_SLS_ENDPOINT=cn-hangzhou.log.aliyuncs.com kubeup/fluent-bit-aliyun:master /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit-forwarder.conf -e /fluent-bit/out_sls.so
+$ docker run -d --network host -e ALIYUN_ACCESS_KEY=YOUR_ACCESS_KEY -e ALIYUN_ACCESS_KEY_SECRET=YOUR_ACCESS_KEY_SECRET -e ALIYUN_SLS_PROJECT=YOUR_PROJECT -e ALIYUN_SLS_LOGSTORE=YOUR_LOGSTORE -e ALIYUN_SLS_ENDPOINT=cn-hangzhou.log.aliyuncs.com kubeup/fluent-bit-aliyun:v0.1.0 /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit-forwarder.conf -e /fluent-bit/out_sls.so
 $ docker run --log-driver=fluentd -d nginx
 ```
 

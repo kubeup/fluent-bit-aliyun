@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: fluent-bit
-        image: kubeup/fluent-bit-aliyun:master
+        image: kubeup/fluent-bit-aliyun:v0.1.0
         imagePullPolicy: Always
         env:
           - name:  ALIYUN_ACCESS_KEY
