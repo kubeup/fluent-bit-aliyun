@@ -16,3 +16,7 @@ clean:
 docker:
 	@echo ">> building docker image"
 	@docker build -t "$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)" docker-image
+
+build:
+	@echo ">> building docker image locally"
+	@docker build -t "$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)"  -f docker-image/Dockerfile.builder .
